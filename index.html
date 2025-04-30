@@ -75,9 +75,15 @@
 
   <script>
     function saveContent() {
-      const content = document.getElementById('editorInput').value;
-      const imageSrc = document.getElementById('previewedImage')?.src || '';
-      const data = JSON.stringify({ text: content, image: imageSrc });
+  const content = document.getElementById('editorInput').value;
+  const imageSrc = document.getElementById('previewedImage')?.src || '';
+  const data = JSON.stringify({ text: content, image: imageSrc });
+  localStorage.setItem('savedNewsletterContent', data);
+  const confirmed = confirm('저장되었습니다! 신문 페이지에서 확인하시겠습니까?');
+  if (confirmed) {
+    window.open('/index.html', '_blank');
+  }
+});
       localStorage.setItem('savedNewsletterContent', data);
       alert('저장되었습니다!');
     }
