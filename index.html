@@ -64,23 +64,32 @@
     <h2>📝 두근두근 신문 편집창</h2>
     <textarea id="editorInput" placeholder="여기에 신문 내용을 입력하세요..."></textarea>
     <div class="buttons">
+      <input type="file" id="imageInput" accept="image/*" onchange="previewImage(event)" style="margin-bottom: 15px;">
+      <br>
       <button class="save" onclick="saveContent()">💾 저장</button>
       <button class="load" onclick="loadContent()">📂 불러오기</button>
       <button class="clear" onclick="clearContent()">🗑 초기화</button>
     </div>
+    <div id="imagePreview" style="text-align:center; margin-top: 15px;"></div>
   </div>
 
   <script>
     function saveContent() {
       const content = document.getElementById('editorInput').value;
-      localStorage.setItem('savedNewsletterContent', content);
+      const imageSrc = document.getElementById('previewedImage')?.src || '';
+      const data = JSON.stringify({ text: content, image: imageSrc });
+      localStorage.setItem('savedNewsletterContent', data);
       alert('저장되었습니다!');
     }
 
     function loadContent() {
-      const content = localStorage.getItem('savedNewsletterContent');
-      if (content) {
-        document.getElementById('editorInput').value = content;
+      const saved = localStorage.getItem('savedNewsletterContent');
+      if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('editorInput').value = data.text;
+        if (data.image) {
+          document.getElementById('imagePreview').innerHTML = `<img id="previewedImage" src="${data.image}" style="max-width:100%; border:1px solid #ccc; border-radius:5px;">`;
+        }
       } else {
         alert('저장된 내용이 없습니다.');
       }
@@ -89,8 +98,19 @@
     function clearContent() {
       localStorage.removeItem('savedNewsletterContent');
       document.getElementById('editorInput').value = '';
+      document.getElementById('imagePreview').innerHTML = '';
       alert('모든 내용이 삭제되었습니다.');
+    }
+
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const imgHTML = `<img id="previewedImage" src="${reader.result}" style="max-width:100%; border:1px solid #ccc; border-radius:5px;">`;
+        document.getElementById('imagePreview').innerHTML = imgHTML;
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
   </script>
 </body>
 </html>
+
