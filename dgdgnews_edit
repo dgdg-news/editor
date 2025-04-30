@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>두근두근 편집창</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 40px 0;
+      color: #333;
+    }
+    .editor-container {
+      width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 1em;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    .buttons {
+      text-align: center;
+    }
+    .buttons button {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .buttons button.save {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .buttons button.clear {
+      background-color: #f44336;
+      color: white;
+    }
+    .buttons button.load {
+      background-color: #2196F3;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="editor-container">
+    <h2>📝 두근두근 신문 편집창</h2>
+    <textarea id="editorInput" placeholder="여기에 신문 내용을 입력하세요..."></textarea>
+    <div class="buttons">
+      <button class="save" onclick="saveContent()">💾 저장</button>
+      <button class="load" onclick="loadContent()">📂 불러오기</button>
+      <button class="clear" onclick="clearContent()">🗑 초기화</button>
+    </div>
+  </div>
+
+  <script>
+    function saveContent() {
+      const content = document.getElementById('editorInput').value;
+      localStorage.setItem('savedNewsletterContent', content);
+      alert('저장되었습니다!');
+    }
+
+    function loadContent() {
+      const content = localStorage.getItem('savedNewsletterContent');
+      if (content) {
+        document.getElementById('editorInput').value = content;
+      } else {
+        alert('저장된 내용이 없습니다.');
+      }
+    }
+
+    function clearContent() {
+      localStorage.removeItem('savedNewsletterContent');
+      document.getElementById('editorInput').value = '';
+      alert('모든 내용이 삭제되었습니다.');
+    }
+  </script>
+</body>
+</html>
